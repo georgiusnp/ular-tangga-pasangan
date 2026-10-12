@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="rose">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Ular Tangga Pasangan - Couple Play</title>
+  <meta name="description" content="Permainan Ular Tangga Kartu Pasangan (Couple Play). Seru, romantis, dan bikin makin dekat dengan 100 pertanyaan mendalam, truth, dare, dan instruksi romantis.">
+  <meta name="theme-color" content="#880E4F">
+  
+  <!-- Google Fonts Poppins (Optional, with local sans-serif fallback for offline) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="brand-wrapper">
+      <div class="brand-icon">❤️</div>
+      <div class="brand-text">
+        <h1>ULAR TANGGA PASANGAN</h1>
+        <span>COUPLE PLAY • SERU & ROMANTIS</span>
+      </div>
+    </div>
+
+    <div class="header-controls">
+      <!-- Pilihan Tema Warna -->
+      <select id="theme-select" class="theme-select" title="Ganti Tema Warna">
+        <option value="rose">🌹 Tema Rose (Pink/Merah)</option>
+        <option value="midnight">🌌 Tema Midnight (Dark Mode)</option>
+        <option value="lavender">🪻 Tema Lavender (Ungu)</option>
+        <option value="sunset">🌅 Tema Sunset (Peach/Oranye)</option>
+        <option value="emerald">🍃 Tema Emerald (Hijau/Sage)</option>
+      </select>
+
+      <!-- Tombol Audio -->
+      <button id="btn-toggle-sound" class="btn-icon" title="Nyalakan/Matikan Suara">
+        🔊 Suara On
+      </button>
+
+      <!-- Tombol Modal Bantuan & Pengaturan -->
+      <button id="btn-open-rules" class="btn-icon" title="Aturan Main">
+        📜 Aturan
+      </button>
+      <button id="btn-open-qbank" class="btn-icon" title="Lihat 100 Pertanyaan">
+        📚 100 Kartu
+      </button>
+      <button id="btn-open-settings" class="btn-icon" title="Atur Pemain">
+        ⚙️ Pemain
+      </button>
+      <button id="btn-reset-game" class="btn-icon" title="Mulai Ulang">
+        🔄 Reset
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="main-container">
+
+    <!-- AREA KIRI: PAPAN ULAR TANGGA -->
+    <section class="game-board-area">
+      <div class="board-frame">
+        <!-- Header Info Papan -->
+        <div class="board-header-bar">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:1.1rem;">🎲</span>
+            <span>PAPAN ULAR TANGGA (80 KOTAK)</span>
+          </div>
+          <div style="display:flex; gap:6px;">
+            <span class="board-tag tag-deep">💬 Deep Talk</span>
+            <span class="board-tag tag-truth">🔍 Truth</span>
+            <span class="board-tag tag-dare">🎭 Dare</span>
+          </div>
+        </div>
+
+        <!-- Wrapper Canvas Papan (Grid + SVG Ular Tangga + Pion) -->
+        <div class="board-canvas-wrapper" id="board-container">
+          <!-- 1. Grid 80 Kotak -->
+          <div class="board-grid" id="board-grid"></div>
+
+          <!-- 2. SVG Ular & Tangga -->
+          <svg class="board-svg-overlay" id="board-svg"></svg>
+
+          <!-- 3. Layer Pion -->
+          <div class="pawns-layer" id="pawns-layer"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AREA KANAN: PANEL KONTROL & DADU -->
+    <aside class="game-control-panel">
+
+      <!-- Giliran Pemain & Dadu 3D -->
+      <div class="panel-card turn-card">
+        <div class="turn-heading">GILIRAN SAAT INI</div>
+        
+        <div class="current-player-display">
+          <div class="player-avatar-badge" id="current-player-avatar">🤴</div>
+          <div style="text-align:left;">
+            <div class="player-name-badge" id="current-player-name">Pasangan 1</div>
+            <div class="player-pos-badge" id="current-player-pos">Kotak 1 / 80</div>
+          </div>
+        </div>
+
+        <!-- Section Dadu 3D -->
+        <div class="dice-section">
+          <div class="dice-viewport" title="Klik dadu untuk melempar!">
+            <div class="dice-cube" id="dice-cube">
+              <!-- Sisi 1 -->
+              <div class="dice-face face-1"><div class="dice-dot"></div></div>
+              <!-- Sisi 2 -->
+              <div class="dice-face face-2"><div class="dice-dot"></div><div class="dice-dot"></div></div>
+              <!-- Sisi 3 -->
+              <div class="dice-face face-3"><div class="dice-dot"></div><div class="dice-dot"></div><div class="dice-dot"></div></div>
+              <!-- Sisi 4 -->
+              <div class="dice-face face-4"><div class="dice-dot"></div><div class="dice-dot"></div><div class="dice-dot"></div><div class="dice-dot"></div></div>
+              <!-- Sisi 5 -->
+              <div class="dice-face face-5"><div class="dice-dot"></div><div class="dice-dot"></div><div class="dice-dot"></div><div class="dice-dot"></div><div class="dice-dot"></div></div>
+              <!-- Sisi 6 -->
+              <div class="dice-face face-6"><div class="dice-dot"></div><div class="dice-dot"></div><div class="dice-dot"></div><div class="dice-dot"></div><div class="dice-dot"></div><div class="dice-dot"></div></div>
+            </div>
+          </div>
+
+          <!-- Label Hasil Dadu Jelas -->
+          <div class="dice-result-badge" id="dice-result-badge">
+            🎲 Klik dadu atau tombol di bawah!
+          </div>
+
+          <!-- Tombol Lempar Dadu -->
+          <button id="btn-roll-dice" class="btn-roll">
+            <span>🎲</span>
+            <span>LEMPAR DADU</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Draw Card (Mode Santai Tanpa Papan) -->
+      <div class="panel-card">
+        <div class="turn-heading" style="text-align:center;">🃏 CABUT KARTU CEPAT</div>
+        <div style="font-size:0.75rem; color:var(--text-muted); text-align:center; margin-bottom:4px;">
+          Ingin santai mengobrol tanpa lempar dadu? Cabut kartu di sini:
+        </div>
+        <div class="quick-cards-grid">
+          <button class="btn-quick-card deep" data-category="deeptalk">
+            <span style="font-size:1.2rem;">💬</span>
+            <span>Deep Talk</span>
+          </button>
+          <button class="btn-quick-card truth" data-category="truth">
+            <span style="font-size:1.2rem;">🔍</span>
+            <span>Truth</span>
+          </button>
+          <button class="btn-quick-card dare" data-category="dare">
+            <span style="font-size:1.2rem;">🎭</span>
+            <span>Dare</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Status Semua Pemain -->
+      <div class="panel-card">
+        <div class="turn-heading" style="margin-bottom:10px;">👥 POSISI & STATUS</div>
+        <div class="players-status-list" id="players-status-list"></div>
+      </div>
+
+      <!-- Catatan Aktivitas Permainan -->
+      <div class="panel-card">
+        <div class="turn-heading" style="margin-bottom:8px;">📜 RIWAYAT PERMAINAN</div>
+        <div class="log-box" id="game-log"></div>
+      </div>
+
+    </aside>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="app-footer">
+    <p>Ular Tangga Kartu Pasangan (Couple Play) • Dibuat untuk menghangatkan momen & mempererat cinta berdua ❤️</p>
+  </footer>
+
+  <!-- ====================================================
+       MODAL: KARTU TANTANGAN / PERTANYAAN
+       ==================================================== -->
+  <div class="modal-overlay" id="challenge-modal">
+    <div class="modal-box">
+      <button class="modal-close-btn modal-close-trigger">&times;</button>
+      
+      <div class="challenge-card-display">
+        <div id="card-category-badge" class="card-category-badge tag-truth">
+          🔍 TRUTH
+        </div>
+
+        <div id="challenge-target-player" class="challenge-target-player">
+          Giliran untuk: Pasangan 1
+        </div>
+
+        <div id="challenge-text-box" class="challenge-text-box">
+          Pertanyaan sedang dimuat...
+        </div>
+
+        <div class="challenge-actions">
+          <button id="btn-complete-challenge" class="btn-action btn-complete">
+            ✅ Selesai Dikerjakan
+          </button>
+          <button id="btn-reroll-challenge" class="btn-action btn-reroll" title="Ganti pertanyaan lain">
+            🔄 Ganti Kartu
+          </button>
+          <button id="btn-skip-challenge" class="btn-action btn-skip" title="Gunakan kuota lewati (maks 2x)">
+            ⏭️ Lewati (2/2)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================
+       MODAL: KEMENANGAN (FINISH / KOTAK 80)
+       ==================================================== -->
+  <div class="modal-overlay" id="victory-modal">
+    <div class="modal-box victory-modal">
+      <button class="modal-close-btn modal-close-trigger">&times;</button>
+      <div class="victory-trophy">🏆</div>
+      <h2 class="victory-title" id="victory-winner-name">Pasangan 1 Menang!</h2>
+      <p class="victory-subtitle" id="victory-winner-desc">
+        Sesuai instruksi kotak 80: Berikan ucapan selamat dan pelukan hangat kepada pemenang permainan!
+      </p>
+      <div style="margin-top:20px;">
+        <button class="btn-roll modal-close-trigger" style="margin:0 auto; max-width:240px;">
+          🎉 Main Lagi Bersama
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================
+       MODAL: PENGATURAN PEMAIN
+       ==================================================== -->
+  <div class="modal-overlay" id="settings-modal">
+    <div class="modal-box">
+      <button class="modal-close-btn modal-close-trigger">&times;</button>
+      <h3 style="margin-bottom:15px; font-weight:800; color:var(--accent-red);">⚙️ Pengaturan Pemain</h3>
+      
+      <div class="settings-form">
+        <!-- Pemain 1 -->
+        <div class="form-group">
+          <label>Nama Pemain 1:</label>
+          <input type="text" id="input-p1-name" class="form-input" placeholder="Nama Pasangan 1" maxlength="15">
+        </div>
+        <div class="form-group">
+          <label>Ikon / Avatar Pemain 1:</label>
+          <div class="avatar-options">
+            <label><input type="radio" name="p1-avatar" value="🤴" checked style="display:none;"><span class="avatar-btn selected">🤴</span></label>
+            <label><input type="radio" name="p1-avatar" value="🦊" style="display:none;"><span class="avatar-btn">🦊</span></label>
+            <label><input type="radio" name="p1-avatar" value="🐻" style="display:none;"><span class="avatar-btn">🐻</span></label>
+            <label><input type="radio" name="p1-avatar" value="🦁" style="display:none;"><span class="avatar-btn">🦁</span></label>
+            <label><input type="radio" name="p1-avatar" value="💙" style="display:none;"><span class="avatar-btn">💙</span></label>
+          </div>
+        </div>
+
+        <hr style="border:0; border-top:1px dashed var(--board-grid); margin:5px 0;">
+
+        <!-- Pemain 2 -->
+        <div class="form-group">
+          <label>Nama Pemain 2:</label>
+          <input type="text" id="input-p2-name" class="form-input" placeholder="Nama Pasangan 2" maxlength="15">
+        </div>
+        <div class="form-group">
+          <label>Ikon / Avatar Pemain 2:</label>
+          <div class="avatar-options">
+            <label><input type="radio" name="p2-avatar" value="👸" checked style="display:none;"><span class="avatar-btn selected">👸</span></label>
+            <label><input type="radio" name="p2-avatar" value="🐰" style="display:none;"><span class="avatar-btn">🐰</span></label>
+            <label><input type="radio" name="p2-avatar" value="🐱" style="display:none;"><span class="avatar-btn">🐱</span></label>
+            <label><input type="radio" name="p2-avatar" value="🐼" style="display:none;"><span class="avatar-btn">🐼</span></label>
+            <label><input type="radio" name="p2-avatar" value="💖" style="display:none;"><span class="avatar-btn">💖</span></label>
+          </div>
+        </div>
+
+        <button id="btn-save-settings" class="btn-save-settings">
+          Simpan Perubahan
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================
+       MODAL: ATURAN BERMAIN (COUPLE PLAY)
+       ==================================================== -->
+  <div class="modal-overlay" id="rules-modal">
+    <div class="modal-box">
+      <button class="modal-close-btn modal-close-trigger">&times;</button>
+      <h3 style="margin-bottom:12px; font-weight:800; color:var(--accent-red); text-align:center;">
+        📜 ATURAN BERMAIN ULAR TANGGA COUPLE
+      </h3>
+      
+      <div style="font-size:0.85rem; line-height:1.6; display:flex; flex-direction:column; gap:12px;">
+        <div style="background:var(--board-bg); padding:12px; border-radius:12px; border-left:4px solid var(--accent-pink);">
+          <strong>🎲 CARA BERMAIN:</strong>
+          <ol style="margin-left:18px; margin-top:4px;">
+            <li>Permainan dapat dimainkan oleh 2 orang pasangan (atau hingga 4 orang).</li>
+            <li>Setiap pemain melempar dadu secara bergantian.</li>
+            <li>Pion berjalan maju sesuai angka pada dadu.</li>
+            <li>Ikuti instruksi pada kotak tempat pion berhenti.</li>
+          </ol>
+        </div>
+
+        <div style="background:var(--board-bg); padding:12px; border-radius:12px; border-left:4px solid var(--accent-gold);">
+          <strong>🪜 TANGGA & 🐍 ULAR:</strong>
+          <ul style="margin-left:18px; margin-top:4px; list-style-type:circle;">
+            <li><strong>Tangga:</strong> Jika berhenti di bagian bawah tangga, pion naik mengikuti tangga sampai ujung atas.</li>
+            <li><strong>Ular:</strong> Jika berhenti di kepala ular, pion harus turun mengikuti badan ular sampai ekornya.</li>
+          </ul>
+        </div>
+
+        <div style="background:var(--board-bg); padding:12px; border-radius:12px; border-left:4px solid var(--accent-purple);">
+          <strong>🃏 JENIS KOTAK PERMAINAN:</strong>
+          <ul style="margin-left:18px; margin-top:4px;">
+            <li><strong>💬 DEEPTALK:</strong> Wajib menjawab pertanyaan mendalam tentang hubungan, perasaan, kenangan, atau masa depan bersama.</li>
+            <li><strong>🔍 TRUTH:</strong> Harus menjawab pertanyaan dengan jujur tanpa boleh berbohong.</li>
+            <li><strong>🎭 DARE:</strong> Wajib melakukan tantangan romantis yang diberikan.</li>
+            <li><strong>✨ KOTAK SPESIAL:</strong> Lakukan instruksi romantis yang tertulis pada papan.</li>
+          </ul>
+        </div>
+
+        <div style="background:#FFF3E0; color:#E65100; padding:12px; border-radius:12px; border-left:4px solid #FF9800;">
+          <strong>🏆 CARA MENANG & ATURAN TAMBAHAN:</strong>
+          <p style="margin-top:4px;">
+            • Pemain pertama yang mencapai <strong>Kotak 80 (FINISH)</strong> menjadi pemenang!<br>
+            • Jawaban harus jujur & sportif.<br>
+            • Tidak boleh me-lewati (skip) challenge lebih dari <strong>2 kali</strong>.<br>
+            • Utamakan kenyamanan & kehangatan bersama pasangan.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================
+       MODAL: KATALOG 100 PERTANYAAN
+       ==================================================== -->
+  <div class="modal-overlay" id="qbank-modal">
+    <div class="modal-box" style="max-width:600px;">
+      <button class="modal-close-btn modal-close-trigger">&times;</button>
+      <h3 style="margin-bottom:12px; font-weight:800; color:var(--accent-red);">
+        📚 KATALOG 100 PERTANYAAN & TANTANGAN
+      </h3>
+
+      <!-- Tabs Kategori -->
+      <div class="qbank-tabs">
+        <button class="qbank-tab-btn active" data-cat="deeptalk">💬 Deep Talk (30)</button>
+        <button class="qbank-tab-btn" data-cat="truth">🔍 Truth (30)</button>
+        <button class="qbank-tab-btn" data-cat="dare">🎭 Dare (30)</button>
+        <button class="qbank-tab-btn" data-cat="special">✨ Kotak Spesial (10)</button>
+      </div>
+
+      <!-- Daftar Pertanyaan -->
+      <div class="qbank-list" id="qbank-items-list"></div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT MODULES -->
+  <script src="questions.js"></script>
+  <script src="audio.js"></script>
+  <script src="confetti.js"></script>
+  <script src="app.js"></script>
+
+  <!-- Helper Script untuk Avatar Picker di Settings Modal -->
+  <script>
+    document.querySelectorAll('.avatar-options').forEach(group => {
+      group.addEventListener('click', (e) => {
+        const btn = e.target.closest('.avatar-btn');
+        if (btn) {
+          const radio = btn.previousElementSibling;
+          if (radio) radio.checked = true;
+          group.querySelectorAll('.avatar-btn').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
